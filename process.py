@@ -1,4 +1,5 @@
 import spacy
+from spacy.lang.fr.tokenizer_exceptions import upper_first_letter, lower_first_letter
 
 # Load the SpaCy English model
 nlp = spacy.load('en_core_web_sm')
@@ -22,25 +23,96 @@ def _is_sentence(doc):
     return has_subject and has_verb
 
 
+def is_sentence_simple(input_text):
+    processed = nlp(input_text)
+    flag = _is_sentence(processed)
+    return [input_text, _deps(processed)] if flag else None
+
+
 def is_sentence(input_text):
-    doc = nlp(input_text)
-    flag = _is_sentence(doc)
-    return [input_text, _deps(doc)] if flag else None
+    processed = nlp(input_text)
+
+    # Check for exactly one root
+    roots = [token for token in processed if token.dep_ == "ROOT"]
+    if len(roots) != 1:
+        return False
+    root = roots[0]
+
+    # Check for root node
+    if len(list(processed.sents)) == 0:
+        return False
+
+    # Check for nominal or clausal subject linked to the root
+    subjects = [child for child in root.children if child.dep_ in {"nsubj", "nsubj:pass", "nsubjpass", "csubj"}]
+    if not subjects:
+        return False
+
+    # Ensure the root is a verb or copula
+    if root.pos_ not in {"VERB", "AUX"}:
+        return False
+
+    # Ensure appropriate punctuation at the end of the sentence
+    # if processed[-1].dep_ != "punct":
+    #     return False
+
+    # Check for no cycles and proper tree structure
+    def check_tree_structure(token, visited):
+        if token in visited:
+            return False
+        visited.add(token)
+        for child in token.children:
+            if not check_tree_structure(child, visited):
+                return False
+        return True
+    if not check_tree_structure(root, set()):
+        return False
+
+    # Ensure basic sentence structures are present
+    # has_object_or_complement = any(child.dep_ in {"obj", "iobj", "ccomp", "xcomp"} for child in root.children)
+    # if not has_object_or_complement:
+    #     return False
+
+    return True
 
 
 def is_not_sentence(input_text):
-    doc = nlp(input_text)
-    flag = _is_sentence(doc)
-    return [input_text, _deps(doc)] if not flag else None
+    processed = nlp(input_text)
+    flag = _is_sentence(processed)
+    return [input_text, _deps(processed)] if not flag else None
 
 
-# Classify examples
+def is_uppercase(char):
+    return char.isupper()
+
+
+def is_capitalized_sentence(input_text):
+    processed = nlp(input_text)
+    sentence_flag = _is_sentence(processed)
+    capitalized_flag = is_uppercase(input_text[0])
+    return [input_text, _deps(processed)] if sentence_flag and capitalized_flag else None
+
+
+def is_uncapitalized_sentence(input_text):
+    processed = nlp(input_text)
+    sentence_flag = _is_sentence(processed)
+    capitalized_flag = is_uppercase(input_text[0])
+    return [input_text, _deps(processed)] if sentence_flag and not capitalized_flag else None
+
+
+def capitalize_if_sentence(input_text):
+    return upper_first_letter(input_text) if is_sentence(input_text) else lower_first_letter(input_text)
+
+
 def main():
     examples = [
         "The quick brown fox jumps over the lazy dog.",
         "a quick brown fox",
         "running fast",
-        "She loves programming and solving complex problems."
+        "She loves programming and solving complex problems.",
+        "The cat sat on the mat.",
+        "He was smoking.",
+        "this is obvious",
+        "obvious though this is "
     ]
     for example in examples:
         result = is_sentence(example)
