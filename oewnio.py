@@ -22,7 +22,7 @@ def load(repo):
     return wn
 
 
-def save(wn, dstdir):
+def save(wn, out_repo):
     synset_yaml = {}
     for synset in wn.synsets:
         s = {}
@@ -52,7 +52,7 @@ def save(wn, dstdir):
         # s["members"] = entries_ordered(wn, synset.id)
         # s["members"] = wn.members_by_id(synset.id)
     for key, synsets in synset_yaml.items():
-        with wordnet_yaml.codecs.open("%s/src/yaml/%s.yaml" % (dstdir, key), "w", "utf-8") as output:
+        with wordnet_yaml.codecs.open("%s/src/yaml/%s.yaml" % (out_repo, key), "w", "utf-8") as output:
             output.write(wordnet_yaml.yaml.dump(synsets, default_flow_style=False, allow_unicode=True))
 
 

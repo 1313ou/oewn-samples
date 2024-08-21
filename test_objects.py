@@ -6,26 +6,26 @@ from wordnet import Example, Definition
 import process
 from process import *
 
-
-def main():
-    for data in (
-    "The quick brown fox jumps over the lazy dog.",
-    "the quick brown fox jumps over the lazy dog.", "A quick brown fox",
-    "a quick brown fox"):
-        definition = data
-        print(process_definition(definition, process.capitalize_if_sentence))
-        definition = Definition(data)
-        print(process_definition(definition, process.capitalize_if_sentence).text)
-
-    for data in (
+corpus = (
     "The quick brown fox jumps over the lazy dog.",
     "the quick brown fox jumps over the lazy dog.",
     "A quick brown fox",
-    "a quick brown fox"):
-        example = data
-        print(process_example(example, process.capitalize_if_sentence))
-        example = Example(data, "source")
-        print(process_example(example, process.capitalize_if_sentence).text)
+    "a quick brown fox",
+)
+
+
+def main():
+    for data in corpus:
+        result = process_definition(data, process.capitalize_if_sentence)
+        print(f"'{data}' -> '{result}'")
+        result = process_definition(Definition(data), process.capitalize_if_sentence).text
+        print(f"Example('{data}') -> '{result}'")
+
+    for data in corpus:
+        result = process_example(data, process.capitalize_if_sentence)
+        print(f"'{data}' -> '{result}'")
+        result = process_example(Example(data, "source"), process.capitalize_if_sentence).text
+        print(f"Example('{data}') -> '{result}'")
 
 
 if __name__ == '__main__':
