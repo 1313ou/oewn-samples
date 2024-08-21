@@ -4,7 +4,6 @@ import argparse
 import sys
 import oewnio
 import wordnet
-import wordnet_yaml
 import process
 from process import *
 
@@ -44,11 +43,7 @@ def process_synsets(wn, definition_processingf, example_processingf):
                 synset.examples = [process_example(example, example_processingf) for example in synset.examples]
 
 
-def get_dprocessing(name):
-    return globals()[name] if name else default_processing
-
-
-def get_xprocessing(name):
+def get_processing(name):
     return globals()[name] if name else default_processing
 
 
@@ -59,17 +54,20 @@ def main():
     parser.add_argument('--dprocessing', type=str, help='definition processing function to apply')
     parser.add_argument('--xprocessing', type=str, help='example processing function to apply')
     args = parser.parse_args()
-    dprocessingf = get_dprocessing(args.dprocessing)
+    dprocessingf = get_processing(args.dprocessing)
     if dprocessingf:
         print(dprocessingf, file=sys.stderr)
-    xprocessingf = get_xprocessing(args.xprocessing)
+    xprocessingf = get_processing(args.xprocessing)
     if xprocessingf:
         print(xprocessingf, file=sys.stderr)
 
+    # read
     wn = oewnio.load(args.repo)
     print(f"loaded from {args.repo}", file=sys.stderr)
+    # process
     process_synsets(wn, dprocessingf, xprocessingf)
     print("processed", file=sys.stderr)
+    # write
     oewnio.save(wn, args.out)
     print(f"saved to {args.out}", file=sys.stderr)
 
