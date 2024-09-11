@@ -1,5 +1,9 @@
+/.venv
 /oewn-*.sqlite
+/oewn-*.sqbpro
 /fork
 /oewn
 /yaml
-/output
+/output*
+*.csv
+*.ods

@@ -2,13 +2,17 @@
 
 import argparse
 import sys
-import oewnio
+import oewnio_synsets
 import wordnet
 import process
 from process import *
 
 
-def default_processing(s):
+def default_processing(s, synsetid):
+    return s
+
+
+def db_processing(s, synsetid):
     return s
 
 
@@ -16,19 +20,19 @@ do_process_definitions = False
 do_process_examples = True
 
 
-def process_definition(definition, processingf):
+def process_definition(definition, synsetid, processingf):
     if isinstance(definition, str):
-        definition = processingf(definition)
+        definition = processingf(definition, synsetid)
     elif isinstance(definition, wordnet.Definition):
-        definition.text = processingf(definition.text)
+        definition.text = processingf(definition.text, synsetid)
     return definition
 
 
-def process_example(example, processingf):
+def process_example(example, synsetid, processingf):
     if isinstance(example, str):
-        example = processingf(example)
+        example = processingf(example, synsetid)
     elif isinstance(example, wordnet.Example):
-        example.text = processingf(example.text)
+        example.text = processingf(example.text, synsetid)
     return example
 
 
@@ -36,11 +40,11 @@ def process_synsets(wn, definition_processingf, example_processingf):
     for synset in wn.synsets:
 
         if do_process_definitions:
-            synset.definitions = [process_definition(definition, definition_processingf) for definition in synset.definitions]
+            synset.definitions = [process_definition(definition, synset.synsetid, definition_processingf) for definition in synset.definitions]
 
         if do_process_examples:
             if synset.examples:
-                synset.examples = [process_example(example, example_processingf) for example in synset.examples]
+                synset.examples = [process_example(example, synset.synsetid, example_processingf) for example in synset.examples]
 
 
 def get_processing(name):
@@ -68,7 +72,7 @@ def main():
     process_synsets(wn, dprocessingf, xprocessingf)
     print("processed", file=sys.stderr)
     # write
-    oewnio.save(wn, args.out)
+    oewnio_synsets.save_synsets(wn, args.out)
     print(f"saved to {args.out}", file=sys.stderr)
 
 

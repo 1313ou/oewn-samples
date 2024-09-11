@@ -8,6 +8,8 @@ import sqlite3
 from tqdm.auto import tqdm
 import process
 from process import *
+import process2
+from process2 import *
 
 sql_union = """
 SELECT 'sam' AS type, sampleid AS nid, sample AS `text`, oewnsynsetid FROM samples INNER JOIN synsets USING(synsetid)
@@ -49,7 +51,7 @@ def process_text(input_text, rowid, processingf):
         if full_print:
             print(f"{rowid}\t{input_text}\t▶\t{r}")
         else:
-            print(f"{rowid}\t{r}")
+            print(f"{rowid}\t{input_text}")
         return 1
     return 0
 
