@@ -1,9 +1,15 @@
 import argparse
 import sys
 import os
+from pathlib import Path
 
 import ezodf
-import sentence_nlp
+import sentence_spacy
+
+
+text_col = 4
+selector_col = 2
+result_col = 8
 
 
 def ensure_row(sheet, row_index):
@@ -23,22 +29,24 @@ def default_process(row):
 
 
 def process_sentence(row):
-    selector = row[2].value
+    selector = row[selector_col].value
     if selector is not None and selector == 's':
-        input_text = row[5].value
-        is_sentence, deps = sentence_nlp.parse_sentence(input_text)
+        input_text = row[text_col].value
+        is_sentence, deps = sentence_stanza.parse_sentence(input_text)
         if not is_sentence:
-            ensure_col(row, 6).set_value(deps)
+            v = str(deps) #.replace('\n','')
+            row[result_col].set_value(v)
             return row
 
 
 def process_not_sentence(row):
-    selector = row[2].value
+    selector = row[selector_col].value
     if selector is not None and selector == 'p':
-        input_text = row[5].value
-        is_sentence, deps = sentence_nlp.parse_sentence(input_text)
+        input_text = row[text_col].value
+        is_sentence, deps = sentence_spacy.parse_sentence(input_text)
         if is_sentence:
-            row[6].set_value(deps)
+            v = str(deps) #.replace('\n','')
+            row[result_col].set_value(v)
             return row
 
 
@@ -51,17 +59,21 @@ def get_processing(name):
     return globals()[name] if name else default_process
 
 
-def run(filename, processf):
-    doc = ezodf.opendoc(filename)
+def run(filepath, processf):
+    file_abspath = os.path.abspath(filepath)
+    doc = ezodf.opendoc(file_abspath)
     sheet = doc.sheets[0]
-    ensure_col(sheet, 6) # for result
+    ensure_col(sheet, result_col)  # for result
+
     count = 0
     for row in read_row(sheet):
         new_row = processf(row)
         if new_row:
-            print(f"{'\t'.join([str(col.value) for col in new_row])}")
+            # print(f"{'\t'.join([str(col.value) for col in new_row])}")
+            print(f"{new_row[text_col].value}")
             count += 1
-    saved = f"{os.path.dirname(filename)}/{os.path.basename(filename)}_{processf}.ods"
+    p = Path(file_abspath)
+    saved = f"{p.parent}/{p.stem}_{processf.__name__}{p.suffix}"
     doc.saveas(saved)
     return count
 
