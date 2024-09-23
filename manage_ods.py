@@ -5,7 +5,7 @@ from pathlib import Path
 import ezodf
 
 import formatter
-import diff2
+import diff
 
 synsetid_col = 0
 nidçcol = 1
@@ -54,8 +54,8 @@ def check_text(row):
     h0 = formatter.text_hash(text0)
     h = formatter.text_hash(text)
     if h != h0:
-        d = diff2.diff_substrings(h0, h)
-        print(f'{row[synsetid_col].value} {d} {text} {text0}', file=sys.stderr)
+        d = diff.diff_substrings(h0, h)
+        print(f'{row[synsetid_col].value} {d} {text0} {text}', file=sys.stderr)
         row[result_col].set_value(d)
         return row
 

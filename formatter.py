@@ -37,8 +37,8 @@ def format_predicate(input_text):
 
 
 def text_hash(input_text):
-    #text2 = input_text.strip('.?!… ')
-    text2 = input_text.strip()
+    text2 = input_text.strip('.?!… ')
+    text2 = text2.strip()
     text2 = text2.lower()
     return text2
 
