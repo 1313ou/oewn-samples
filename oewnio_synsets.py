@@ -31,9 +31,6 @@ def save_synsets(wn, out_repo):
             synset_yaml[synset.lex_name] = {}
         synset_yaml[synset.lex_name][synset.id[wordnet_yaml.KEY_PREFIX_LEN:]] = s
         s["members"] = [wn.id2entry[m].lemma.written_form for m in synset.members]
-        # BUG : these do not preserve order
-        # s["members"] = entries_ordered(wn, synset.id)
-        # s["members"] = wn.members_by_id(synset.id)
     for key, synsets in synset_yaml.items():
         with wordnet_yaml.codecs.open("%s/src/yaml/%s.yaml" % (out_repo, key), "w", "utf-8") as output:
             output.write(wordnet_yaml.yaml.dump(synsets, default_flow_style=False, allow_unicode=True))

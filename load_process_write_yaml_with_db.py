@@ -2,6 +2,7 @@
 
 import argparse
 import sys
+import oewnio
 import oewnio_synsets
 import wordnet
 import sqlite3
@@ -10,9 +11,17 @@ from contextlib import contextmanager
 import process
 from process import *
 
+do_process_definitions = False
+do_process_examples = True
 
-def default_processing(s, synsetid, conn):
-    return s
+
+@contextmanager
+def sqlite_connection(db_name):
+    conn = sqlite3.connect(db_name)
+    try:
+        yield conn
+    finally:
+        conn.close()
 
 
 def db_processing(s, oewnsynsetid, conn):
@@ -25,8 +34,8 @@ def db_processing(s, oewnsynsetid, conn):
     return None
 
 
-do_process_definitions = False
-do_process_examples = True
+def _default_processing(s, synsetid, conn):
+    return s
 
 
 def process_definition(definition, synsetid, processingf, conn):
@@ -59,17 +68,7 @@ def process_synsets(wn, definition_processingf, example_processingf, conn):
 
 
 def get_processing(name):
-    return globals()[name] if name else default_processing
-
-
-@contextmanager
-def sqlite_connection(db_name):
-    conn = sqlite3.connect(db_name)
-    try:
-        yield conn
-    finally:
-        conn.close()
-
+    return globals()[name] if name else _default_processing
 
 
 def main():

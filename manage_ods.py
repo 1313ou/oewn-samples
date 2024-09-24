@@ -8,7 +8,7 @@ import formatter
 import diff
 
 synsetid_col = 0
-nidçcol = 1
+nid_col = 1
 selector_col = 2
 xselector_col = 3
 text_col = 4
