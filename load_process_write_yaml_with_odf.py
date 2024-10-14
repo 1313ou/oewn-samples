@@ -3,26 +3,17 @@
 import argparse
 import os
 import sys
-import oewnio
-import oewnio_synsets
 import wordnet
 import ezodf
-from contextlib import contextmanager
-
+import oewnio
+import oewnio_synsets
 from oewnio_synsets import save_synsets
 
-do_process_examples = False
-do_process_examples = True
+from contextlib import contextmanager
 
-synsetid_col = 0
-nid_col = 1
-selector_col = 2
-xselector_col = 3
-text_col = 4
-text0_col = 5
-note_col = 6
-status_col = 7
-result_col = 8
+
+do_process_examples = False
+do_process_definitions = True
 
 
 @contextmanager
@@ -72,7 +63,7 @@ def set_example(examples, index, new_text):
 def process_synset(synset, m):
     count = 0
     if synset.examples is None or len(synset.examples) == 0:
-        # print(f"{synset.id} has no example")
+        print(f"{synset.id} has no example")
         # raise Exception(f"{k} has no example")
         return 0
 

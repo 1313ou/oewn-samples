@@ -1,1 +1,0 @@
-/opt/devel/oewn-toolkit/fork/scripts/wordnet_yaml.py

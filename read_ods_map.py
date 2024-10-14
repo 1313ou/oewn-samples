@@ -1,6 +1,6 @@
-import argparse
-import sys
 
+
+import argparse
 import ezodf
 
 
@@ -14,7 +14,7 @@ def make_map(filename, key_index, values_indexes):
         vals_cols = values_indexes
         vals = [sheet[rowi, val_col].value for val_col in vals_cols]
         if key:
-           kvmap[key] = vals
+            kvmap[key] = vals
     return kvmap
 
 
