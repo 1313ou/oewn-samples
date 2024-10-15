@@ -42,10 +42,6 @@ def info(doc):
     #return ""
 
 
-def default_process(input_text):
-    return input_text
-
-
 def is_sentence(input_text):
     doc = nlp(input_text)
     return _is_sentence(doc)

@@ -6,10 +6,8 @@ import time
 import sqlite3
 
 from tqdm.auto import tqdm
-import process
-from process import *
-import process2
-from process2 import *
+import process_quotes
+from process_quotes import *
 
 sql_union = """
 SELECT 'sam' AS type, sampleid AS nid, sample AS `text`, oewnsynsetid FROM samples INNER JOIN synsets USING(synsetid)
@@ -43,6 +41,10 @@ scope_2_sql_count = {
 
 progress = False
 full_print = False
+
+
+def default_process(input_text):
+    return input_text
 
 
 def process_text(input_text, rowid, processingf):
@@ -97,7 +99,7 @@ def read(file, resume, processingf, scope=None):
 
 
 def get_processing(name):
-    return globals()[name] if name else process.default_process
+    return globals()[name] if name else default_process
 
 
 def main():

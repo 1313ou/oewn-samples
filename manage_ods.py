@@ -34,7 +34,7 @@ def check_text(row):
 def format_text(row):
     clazz = row[col.class_col].value
     directive = row[col.directive_col].value
-    text = row[col.text_col].value
+    text = row[col.text0_col].value
     if directive == 'F':
         return
     if text is None:
@@ -57,6 +57,8 @@ def format_text(row):
             row[col.text_col].set_value(new_text)
             print(f'{row[col.synsetid_col].value}\t{row[col.class_col].value}\t{row[col.directive_col].value}\t{text}', file=sys.stderr)
             return row
+    else:
+        raise Exception(f'unknown class {clazz}')
 
 
 def read_row(sheet):

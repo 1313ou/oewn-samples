@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="read_db (is NOT sentence) (samples)" type="PythonConfigurationType" factoryName="Python" folderName="db">
+  <configuration default="false" name="read_db (samples)" type="PythonConfigurationType" factoryName="Python" folderName="db">
     <module name="oewn-samples" />
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
@@ -8,13 +8,13 @@
       <env name="PYTHONUNBUFFERED" value="1" />
     </envs>
     <option name="SDK_HOME" value="" />
-    <option name="SDK_NAME" value="Python 3.12 (.venv)" />
+    <option name="SDK_NAME" value="Python 3.12 (oewn-samples)" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <option name="IS_MODULE_SDK" value="false" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_db.py" />
-    <option name="PARAMETERS" value="--processing is_not_sentence --scope samples oewn-2024-sqlite-2.1.1-x.sqlite" />
+    <option name="PARAMETERS" value="--scope samples oewn-2024-sqlite-2.1.1-x.sqlite" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />
