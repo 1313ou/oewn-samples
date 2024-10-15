@@ -5,6 +5,7 @@
 /oewn
 /yaml
 /output*
-*.csv
-*.ods
+**/*.csv
+**/*.ods
+**/*.bak
 log*
