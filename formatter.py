@@ -2,7 +2,8 @@
 
 
 def punctuate(input_text):
-    return input_text if input_text[-1] in ('.', '?', '!', '…') else input_text + '.'
+    r = input_text if input_text[-1] in ('.', '?', '!', '…') else input_text + '.'
+    return r
 
 
 def depunctuate(input_text):
@@ -49,10 +50,13 @@ def main():
     examples = [
         "is anybody here",
         "do you smoke",
+        "i woke up at 6 A.M.",
+        "he visited us",
+        "i visited the U.S.",
+
     ]
     for input_text in examples:
-        print(f"Punctuation: {capitalize(punctuate(input_text))}")
-        print("\n")
+        print(f"Punctuation: {format_sentence(input_text)}")
 
 
 if __name__ == '__main__':

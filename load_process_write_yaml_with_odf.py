@@ -5,15 +5,15 @@ import os
 import sys
 import wordnet
 import ezodf
-import oewnio
-import oewnio_synsets
-from oewnio_synsets import save_synsets
+import ods_columns as cols
+import wordnet_fromyaml
+import wordnet_toyaml
 
 from contextlib import contextmanager
 
 
-do_process_examples = False
-do_process_definitions = True
+do_process_examples = True
+do_process_definitions = False
 
 
 @contextmanager
@@ -35,9 +35,9 @@ def read_row(sheet):
 def make_map(sheet):
     m = dict()
     for row in read_row(sheet):
-        oewnsynsetid = row[synsetid_col].value
-        nid = row[nid_col].value
-        text = row[text_col].value
+        oewnsynsetid = row[cols.synsetid_col].value
+        nid = row[cols.nid_col].value
+        text = row[cols.text_col].value
 
         if oewnsynsetid not in m:
             m[oewnsynsetid] = []
@@ -61,28 +61,31 @@ def set_example(examples, index, new_text):
 
 
 def process_synset(synset, m):
-    count = 0
     if synset.examples is None or len(synset.examples) == 0:
-        print(f"{synset.id} has no example")
+        # print(f"{synset.id} has no example")
         # raise Exception(f"{k} has no example")
         return 0
 
-    k = f"{synset.id[5:]}"
+    k = synset.id
     if k not in m:
-        print(f"{k} not in map")
-        raise Exception(f"{k} has no data")
-        #return 0
+        print(f"model synset {k} not in data map (synset for {synset.members})")
+        #raise ValueError(f"{k} has no data")
+        return 0
 
     data = m[k]
     if not data:
-        raise Exception(f"{k} has no data")
+        raise ValueError(f"{k} (synset for {synset.members}) has no data")
 
     sorted_data = sorted(data, key=lambda x: x[0])
     examples = [e[1] for e in sorted_data]
     l = len(synset.examples)
-    if len(examples) != l:
-        raise Exception(f"{synset.id} and data differ in the number of examples")
-    for i in range(l):
+    l2 = len(examples)
+    if l2 != l:
+        message = f"model {synset.id} (synset for {synset.members}) and data differ in the number of examples model={l} != data={l2}"
+        print(message)
+        # raise ValueError(message)
+    count = 0
+    for i in range(l2):
         new_text = examples[i]
         set_example(synset.examples, i, new_text)
         count += 1
@@ -108,7 +111,7 @@ def run():
         print(f"map from {args.ods}", file=sys.stderr)
         # run
         print(f"loading from {args.repo}", file=sys.stderr)
-        wn = oewnio.load(args.repo)
+        wn = wordnet_fromyaml.load(args.repo)
         print(f"loaded from {args.repo}", file=sys.stderr)
         # process
         print(f"processing", file=sys.stderr)
@@ -116,7 +119,7 @@ def run():
         print(f"processed {n}", file=sys.stderr)
         # write
         print(f"saving to {args.out_repo}", file=sys.stderr)
-        oewnio_synsets.save_synsets(wn, args.out_repo)
+        wordnet_toyaml.save_synsets(wn, args.out_repo)
         print(f"saved to {args.out_repo}", file=sys.stderr)
 
 
@@ -132,7 +135,7 @@ def test():
         print(f"map from {args.ods}", file=sys.stderr)
 
         # dummy synset
-        synset = wordnet.Synset('oewn-00094303-n', 'ili', 'n', 'lexname')
+        synset = wordnet.Synset('00094303-n', 'n', ('m1','m2','m3'), 'lexname')
         exs = ['a', wordnet.Example('b', 'Nobody')]
         synset.examples = exs
 
@@ -152,4 +155,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    run()

@@ -1,5 +1,6 @@
 import argparse
 import os
+import re
 import sqlite3
 import sys
 from contextlib import contextmanager
@@ -13,7 +14,11 @@ import ods_utils
 
 
 def normalize(k):
-    return k.strip(' .?!…').lower()
+    k = re.sub(r'[,;:]', '', k)
+    return (k
+            .strip(' .?!…')
+            .lower()
+            )
 
 
 # `s´ grave-acute
@@ -89,12 +94,13 @@ def update_from_db(ods_row, conn):
         return fetch_synset_samples(ods_row, conn)
     else:
         row_sampleid = row["sampleid"]
-        if ods_sampleid == row_sampleid:
-            row_oewnsynsetid = row["oewnsynsetid"]
-            row_sample = row["sample"]
-            print(f"{ods_oewnsynsetid}\t{ods_sampleid}\t{ods_sample}\t->\t{row_oewnsynsetid}\t{row_sampleid}\t{row_sample}")
+        row_oewnsynsetid = row["oewnsynsetid"]
+        row_sample = row["sample"]
+        if ods_sampleid != row_sampleid:
+            # print(f"XI={ods_oewnsynsetid}\t{ods_sampleid}\t{ods_sample}\t->\t{row_oewnsynsetid}\t{row_sampleid}")
             ods_row[col.nid_col].set_value(row_sampleid)
-            return ods_row
+        ods_row[col.text0_col].set_value(row_sample)
+        return ods_row
 
 
 def default_process(row, conn):
@@ -133,7 +139,7 @@ def run(filepath, database, processf):
             new_row = processf(row, conn)
             if new_row is not None:
                 # print(f"{'\t'.join([str(c.value) for c in new_row])}")
-                print(f"{new_row[col.synsetid_col].value} {new_row[col.nid_col].value} {new_row[col.text_col].value}")
+                # print(f"{new_row[col.synsetid_col].value} {new_row[col.nid_col].value} {new_row[col.text0_col].value}")
                 count += 1
 
         p = Path(file_abspath)
