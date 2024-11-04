@@ -46,11 +46,16 @@ def fetch_synset_samples(ods_row, conn):
     ods_oewnsynsetid, ods_sampleid, ods_sample = get_data(ods_row)
     cursor = conn.cursor()
     sql = f"""
-    SELECT sampleid, oewnsynsetid, sample 
+    SELECT sampleid AS eid, oewnsynsetid, sample AS txt
     FROM samples 
     LEFT JOIN synsets USING (synsetid) 
     WHERE oewnsynsetid = '{ods_oewnsynsetid}'
-    ORDER BY sampleid;
+    UNION
+    SELECT usageid AS eid, oewnsynsetid, usagenote AS txt 
+    FROM usages 
+    LEFT JOIN synsets USING (synsetid) 
+    WHERE oewnsynsetid = '{ods_oewnsynsetid}'
+    ORDER BY eid;
     """
     try:
         cursor.execute(sql)
@@ -61,28 +66,34 @@ def fetch_synset_samples(ods_row, conn):
         print(f"\tODS NOT IN DB \t{ods_oewnsynsetid}", file=sys.stderr)
     else:
         for index, row in enumerate(rows):
-            row_sample = row["sample"]
-            row_sampleid = row["sampleid"]
+            row_sample = row["txt"]
+            row_sampleid = row["eid"]
             if equal_but_quotes(ods_sample, row_sample):
-                print(f"\tQ= {index + 1}\t{row_sampleid}\t{row_sample}")
+                print(f"\tDIFF QUOTES= {index + 1}\t{row_sampleid}\t{row_sample}")
                 ods_row[col.text0_col].set_value(row_sample)
                 ods_row[col.nid_col].set_value(row_sampleid)
                 return ods_row
 
         for index, row in enumerate(rows):
-            row_sample = row["sample"]
-            row_sampleid = row["sampleid"]
+            row_sample = row["txt"]
+            row_sampleid = row["eid"]
             print(f"\t{index + 1}\t{row_sampleid}\t{row_sample}")
 
 
 def update_from_db(ods_row, conn):
     ods_oewnsynsetid, ods_sampleid, ods_sample = get_data(ods_row)
     cursor = conn.cursor()
+    escaped_sample = ods_sample.replace("'", "''")
     sql = f"""
-    SELECT sampleid, oewnsynsetid, sample 
+    SELECT sampleid AS eid, oewnsynsetid, sample AS txt, 'sample' AS t
     FROM samples 
     LEFT JOIN synsets USING (synsetid) 
-    WHERE oewnsynsetid = '{ods_oewnsynsetid}' AND sample = '{ods_sample.replace("'", "''")}';
+    WHERE oewnsynsetid = '{ods_oewnsynsetid}' AND sample = '{escaped_sample}'
+    UNION
+    SELECT usageid AS eid, oewnsynsetid, usagenote AS txt, 'usage' AS t
+    FROM usages 
+    LEFT JOIN synsets USING (synsetid) 
+    WHERE oewnsynsetid = '{ods_oewnsynsetid}' AND usagenote = '{escaped_sample}';
     """
     try:
         cursor.execute(sql)
@@ -93,9 +104,10 @@ def update_from_db(ods_row, conn):
         print(f"NOT IN DB {ods_oewnsynsetid}\t{ods_sampleid}\t{ods_sample}\t", file=sys.stderr)
         return fetch_synset_samples(ods_row, conn)
     else:
-        row_sampleid = row["sampleid"]
+        row_sampleid = row["eid"]
         row_oewnsynsetid = row["oewnsynsetid"]
-        row_sample = row["sample"]
+        row_source = row["t"]
+        row_sample = row["txt"]
         if ods_sampleid != row_sampleid:
             # print(f"XI={ods_oewnsynsetid}\t{ods_sampleid}\t{ods_sample}\t->\t{row_oewnsynsetid}\t{row_sampleid}")
             ods_row[col.nid_col].set_value(row_sampleid)
@@ -136,11 +148,12 @@ def run(filepath, database, processf):
 
         count = 0
         for row in read_row(sheet):
-            new_row = processf(row, conn)
-            if new_row is not None:
-                # print(f"{'\t'.join([str(c.value) for c in new_row])}")
-                # print(f"{new_row[col.synsetid_col].value} {new_row[col.nid_col].value} {new_row[col.text0_col].value}")
-                count += 1
+            if row and row[col.synsetid_col]:
+                new_row = processf(row, conn)
+                if new_row is not None:
+                    # print(f"{'\t'.join([str(c.value) for c in new_row])}")
+                    # print(f"{new_row[col.synsetid_col].value} {new_row[col.nid_col].value} {new_row[col.text0_col].value}")
+                    count += 1
 
         p = Path(file_abspath)
         saved = f"{p.parent}/{p.stem}_{processf.__name__}{p.suffix}"

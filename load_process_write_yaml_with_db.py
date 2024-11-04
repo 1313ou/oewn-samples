@@ -1,14 +1,12 @@
 #!/usr/bin/python3
 
 import argparse
-import sys
-import oewnio
-import oewnio_synsets
-import wordnet
 import sqlite3
 from contextlib import contextmanager
 
-import process
+from oewn.from_yaml import load
+from oewn.wordnet import Definition, Example
+from oewn_core.wordnet_toyaml import save_synsets
 from process import *
 
 do_process_definitions = False
@@ -41,7 +39,7 @@ def _default_processing(s, synsetid, conn):
 def process_definition(definition, synsetid, processingf, conn):
     if isinstance(definition, str):
         definition = processingf(definition, synsetid, conn)
-    elif isinstance(definition, wordnet.Definition):
+    elif isinstance(definition, Definition):
         definition.text = processingf(definition.text, synsetid, conn)
     return definition
 
@@ -49,7 +47,7 @@ def process_definition(definition, synsetid, processingf, conn):
 def process_example(example, synsetid, processingf, conn):
     if isinstance(example, str):
         example = processingf(example, synsetid, conn)
-    elif isinstance(example, wordnet.Example):
+    elif isinstance(example, Example):
         example.text = processingf(example.text, synsetid, conn)
     return example
 
@@ -90,13 +88,13 @@ def main():
     with sqlite_connection(args.database) as conn:
 
         # run
-        wn = oewnio.load(args.repo)
+        wn = load(args.repo, extend=False)
         print(f"loaded from {args.repo}", file=sys.stderr)
         # process
         process_synsets(wn, dprocessingf, xprocessingf, conn)
         print("processed", file=sys.stderr)
         # write
-        oewnio_synsets.save_synsets(wn, args.out)
+        save_synsets(wn, args.out)
         print(f"saved to {args.out}", file=sys.stderr)
 
 

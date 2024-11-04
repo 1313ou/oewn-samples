@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c97c8407-096c-4e7e-9d4e-88d6445bf31b" name="Changes" comment="wip">
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/manage_ods__check_text_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/manage_ods__format_text_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/read_db__grave_or_acute_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/read_db__grave_or_acute_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/read_db__lquote_or_rquote_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/read_db__lquote_or_rquote_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/read_db__quote_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/read_db__quote_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/read_ods_db__update_from_db_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage_ods.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage_ods.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ods_columns.py" beforeDir="false" afterPath="$PROJECT_DIR$/ods_columns.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/fork" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;1313ou&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/1313ou/sentence_classification.git&quot;,
+    &quot;accountId&quot;: &quot;ab8c5469-cd9a-43bc-b439-4943c492d66e&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2nQbbQjuV0QTcfsH4lFzzQ5PGIf" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python tests.Python tests in load_process_write_yaml_with_odf.py.executor": "Run",
+    "Python.1-read_ods_db (update_from_db).executor": "Run",
+    "Python.2-manage_ods (format_text).executor": "Run",
+    "Python.3-manage_ods (check_text).executor": "Run",
+    "Python.4-transfer (ods to output).executor": "Run",
+    "Python.formatter.executor": "Run",
+    "Python.get_yaml_ids.executor": "Run",
+    "Python.manage_ods (check_text).executor": "Run",
+    "Python.manage_ods (format_text).executor": "Run",
+    "Python.manage_ods.executor": "Run",
+    "Python.read_db (grave or acute).executor": "Run",
+    "Python.read_db (lquote or rquote).executor": "Run",
+    "Python.read_db (quote).executor": "Run",
+    "Python.read_db.executor": "Run",
+    "Python.read_ods.executor": "Run",
+    "Python.read_ods_db (update_from_db).executor": "Run",
+    "Python.read_ods_db.executor": "Run",
+    "Python.transfer (ods to output).executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "oewn2024",
+    "last_opened_file_path": "/opt/devel/oewn-samples"
+  },
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "TEXT"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/output-archive" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.1-read_ods_db (update_from_db)">
+    <configuration name="formatter" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="sentence_classification" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/formatter.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.read_db (lquote or rquote)" />
+      <item itemvalue="Python.read_db (quote)" />
+      <item itemvalue="Python.read_db (grave or acute)" />
+      <item itemvalue="Python.1-read_ods_db (update_from_db)" />
+      <item itemvalue="Python.2-manage_ods (format_text)" />
+      <item itemvalue="Python.3-manage_ods (check_text)" />
+      <item itemvalue="Python.4-transfer (ods to output)" />
+      <item itemvalue="Python.formatter" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.formatter" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-d7ad00fb9fc3-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23726.102" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c97c8407-096c-4e7e-9d4e-88d6445bf31b" name="Changes" comment="" />
+      <created>1728908317345</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1728908317345</updated>
+    </task>
+    <task id="LOCAL-00001" summary="wip">
+      <option name="closed" value="true" />
+      <created>1728971497123</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1728971497123</updated>
+    </task>
+    <task id="LOCAL-00002" summary="wip">
+      <option name="closed" value="true" />
+      <created>1728971601377</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1728971601377</updated>
+    </task>
+    <task id="LOCAL-00003" summary="wip">
+      <option name="closed" value="true" />
+      <created>1729063965194</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1729063965194</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="wip" />
+    <option name="LAST_COMMIT_MESSAGE" value="wip" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/load_process_write_yaml_with_odf.py</url>
+          <line>68</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

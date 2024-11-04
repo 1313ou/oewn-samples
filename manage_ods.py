@@ -43,19 +43,19 @@ def format_text(row):
         new_text = formatter.format_sentence(text)
         if text != new_text:
             row[col.text_col].set_value(new_text)
-            print(f'{row[col.synsetid_col].value}\t{row[col.class_col].value}\t{row[col.directive_col].value}\t{text}', file=sys.stderr)
+            #print(f'{row[col.synsetid_col].value}\t{row[col.class_col].value}\t{row[col.directive_col].value}\t{text}')
             return row
     elif clazz == 'P':
         new_text = formatter.format_predicate(text)
         if text != new_text:
             row[col.text_col].set_value(new_text)
-            print(f'{row[col.synsetid_col].value}\t{row[col.class_col].value}\t{row[col.directive_col].value}\t{text}', file=sys.stderr)
+            #print(f'{row[col.synsetid_col].value}\t{row[col.class_col].value}\t{row[col.directive_col].value}\t{text}')
             return row
     elif clazz in ('N', 'V', 'A', 'D'):
         new_text = formatter.format_phrase(text, do_capitalize=directive == 'C')
         if text != new_text:
             row[col.text_col].set_value(new_text)
-            print(f'{row[col.synsetid_col].value}\t{row[col.class_col].value}\t{row[col.directive_col].value}\t{text}', file=sys.stderr)
+            #print(f'{row[col.synsetid_col].value}\t{row[col.class_col].value}\t{row[col.directive_col].value}\t{text}')
             return row
     else:
         raise Exception(f'unknown class {clazz}')
