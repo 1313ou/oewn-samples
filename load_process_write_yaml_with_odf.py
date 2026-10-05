@@ -12,7 +12,18 @@ import ods_columns as cols
 from oewn_core.wordnet import Example, Synset
 from oewn_core.wordnet_fromyaml import load
 from oewn_core.wordnet_toyaml import save_synsets
+from ezodf.document import MIMETYPES
 
+"""
+Transfer ODS to YAML (output dir, YAML dir)
+"""
+
+# Map extensions with leading dots so modern Python extension parsing works
+for ext in list(MIMETYPES.keys()):
+    MIMETYPES['.' + ext] = MIMETYPES[ext]
+
+
+has_usages = False
 do_process_examples = True
 do_process_definitions = False
 
@@ -87,7 +98,8 @@ def process_synset(synset, m):
         raise ValueError(f"{k} (synset for {synset.members}) has no data")
 
     # samples
-    sorted_data = sorted(filter(lambda d: d[2] != 'U', data), key=lambda x: x[0])
+    filtered_data = filter(lambda d: d[2] != 'U', data) if has_usages else data
+    sorted_data = sorted(filtered_data, key=lambda x: x[0])
     examples = [e[1] for e in sorted_data]
     l = len(synset.examples)
     l2 = len(examples)
@@ -113,10 +125,11 @@ def process_synset(synset, m):
             if not found_match:
                 print(f"\tcould not find candidate for model[{i}] '{old_text}'", file=sys.stderr)
     # usage
-    usage_data = list(map(lambda e: e[1], filter(lambda d: d[2] == 'U', data)))
-    if usage_data:
-        synset.usages = usage_data
-        count += 1
+    if has_usages:
+        usage_data = list(map(lambda e: e[1], filter(lambda d: d[2] == 'U', data)))
+        if usage_data:
+            synset.usages = usage_data
+            count += 1
 
     return count
 

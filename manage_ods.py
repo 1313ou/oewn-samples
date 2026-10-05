@@ -1,5 +1,3 @@
-
-
 import argparse
 import sys
 import os
@@ -11,17 +9,28 @@ import diff
 import ods_utils
 import ods_columns as col
 
+from ezodf.document import MIMETYPES
 
-def default_process(row):
-    return row
+"""
+Process ODS.
+-Format text
+-Chack text
+"""
+
+# Map extensions with leading dots so modern Python extension parsing works
+for ext in list(MIMETYPES.keys()):
+    MIMETYPES['.' + ext] = MIMETYPES[ext]
 
 
 def check_text(row):
+    """
+    Format sample text as per directive and class
+    """
     text0 = row[col.text0_col].value
     text = row[col.text_col].value
     if text is None or text0 is None:
         # print(f'{row[synsetid_col].value} {text} {text0}', file=sys.stderr)
-        return
+        return None
     h0 = formatter.text_hash(text0)
     h = formatter.text_hash(text)
     if h != h0:
@@ -29,45 +38,56 @@ def check_text(row):
         print(f'{row[col.synsetid_col].value} {d} {text0} {text}', file=sys.stderr)
         row[col.diff_col].set_value(d)
         return row
+    return None
 
 
 def format_text(row):
+    """
+    Format sample initial text0 as per directive and class and save to text column
+    """
     clazz = row[col.class_col].value
     directive = row[col.directive_col].value
     text = row[col.text0_col].value
     if directive == 'F':
-        return
+        return None
     if text is None:
-        return
+        return None
     if clazz in ('S', 'I'):
         new_text = formatter.format_sentence(text)
         if text != new_text:
             row[col.text_col].set_value(new_text)
-            #print(f'{row[col.synsetid_col].value}\t{row[col.class_col].value}\t{row[col.directive_col].value}\t{text}')
+            # print(f'{row[col.synsetid_col].value}\t{row[col.class_col].value}\t{row[col.directive_col].value}\t{text}')
             return row
+        return None
     elif clazz == 'P':
         new_text = formatter.format_predicate(text)
         if text != new_text:
             row[col.text_col].set_value(new_text)
-            #print(f'{row[col.synsetid_col].value}\t{row[col.class_col].value}\t{row[col.directive_col].value}\t{text}')
+            # print(f'{row[col.synsetid_col].value}\t{row[col.class_col].value}\t{row[col.directive_col].value}\t{text}')
             return row
+        return None
     elif clazz in ('N', 'V', 'A', 'D'):
         new_text = formatter.format_phrase(text, do_capitalize=directive == 'C')
         if text != new_text:
             row[col.text_col].set_value(new_text)
-            #print(f'{row[col.synsetid_col].value}\t{row[col.class_col].value}\t{row[col.directive_col].value}\t{text}')
+            # print(f'{row[col.synsetid_col].value}\t{row[col.class_col].value}\t{row[col.directive_col].value}\t{text}')
             return row
+        return None
     else:
         raise Exception(f'unknown class {clazz}')
+
+
+def default_process(row):
+    return row
+
+
+def get_processing(name):
+    return globals()[name] if name else default_process
 
 
 def read_row(sheet):
     for row in range(sheet.nrows()):
         yield [sheet[row, c] for c in range(sheet.ncols())]
-
-
-def get_processing(name):
-    return globals()[name] if name else default_process
 
 
 def run(filepath, processf):
@@ -83,14 +103,14 @@ def run(filepath, processf):
             # print(f"{'\t'.join([str(c.value) for c in new_row])}")
             # print(f"{new_row[col.text_col].value}")
             count += 1
-    p = Path(file_abspath)
+    p = Path(str(file_abspath))
     saved = f"{p.parent}/{p.stem}_{processf.__name__}{p.suffix}"
     doc.saveas(saved)
     return count
 
 
 def main():
-    parser = argparse.ArgumentParser(description="scans the ods")
+    parser = argparse.ArgumentParser(description="processes the ODS rows")
     parser.add_argument('file', type=str, help='file')
     parser.add_argument('--processing', type=str, help='processing function to apply')
     args = parser.parse_args()

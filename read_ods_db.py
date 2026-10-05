@@ -11,6 +11,25 @@ import ezodf
 
 import ods_columns as col
 import ods_utils
+from ezodf.document import MIMETYPES
+
+"""
+Update sample text in ODS with sample text in the sqlite database.
+"""
+
+# Map extensions with leading dots so modern Python extension parsing works
+for ext in list(MIMETYPES.keys()):
+    MIMETYPES['.' + ext] = MIMETYPES[ext]
+
+
+def get_data(row):
+    """
+    Extract synsetid, sampleid, sample text from ODS row
+    """
+    oewnsynsetid = row[col.synsetid_col].value
+    sampleid = str(int(row[col.nid_col].value))
+    sample = row[col.text0_col].value
+    return oewnsynsetid, sampleid, sample
 
 
 def normalize(k):
@@ -30,19 +49,18 @@ rquote = '’'
 
 
 def equal_but_quotes(s1, s2):
+    """
+    Match regardless of quotes
+    """
     h1 = normalize(s1).replace(grave, '').replace(acute, '').replace(lquote, '').replace(rquote, '')
     h2 = normalize(s2).replace(grave, '').replace(acute, '').replace(lquote, '').replace(rquote, '')
     return h1 == h2
 
 
-def get_data(row):
-    oewnsynsetid = row[col.synsetid_col].value
-    sampleid = str(int(row[col.nid_col].value))
-    sample = row[col.text0_col].value
-    return oewnsynsetid, sampleid, sample
-
-
 def fetch_synset_samples(ods_row, conn):
+    """
+    Fetch the synset's examples and try a looser match
+    """
     ods_oewnsynsetid, ods_sampleid, ods_sample = get_data(ods_row)
     cursor = conn.cursor()
     sql = f"""
@@ -63,24 +81,33 @@ def fetch_synset_samples(ods_row, conn):
         print(oe, sql)
     rows = cursor.fetchall()
     if rows is None:
-        print(f"\tODS NOT IN DB \t{ods_oewnsynsetid}", file=sys.stderr)
+        print(f"FAIL\todf={(ods_oewnsynsetid, ods_sampleid, ods_sample)}", file=sys.stderr)
+        return None
     else:
         for index, row in enumerate(rows):
             row_sample = row["txt"]
             row_sampleid = row["eid"]
             if equal_but_quotes(ods_sample, row_sample):
-                print(f"\tDIFF QUOTES= {index + 1}\t{row_sampleid}\t{row_sample}")
+                # print(f"\tDIFF QUOTES= {index + 1}\t{row_sampleid}\t{row_sample}", file=sys.stderr)
                 ods_row[col.text0_col].set_value(row_sample)
                 ods_row[col.nid_col].set_value(row_sampleid)
                 return ods_row
 
+        print(f"FAIL\todf={(ods_oewnsynsetid, ods_sampleid, ods_sample)}", file=sys.stderr)
         for index, row in enumerate(rows):
             row_sample = row["txt"]
             row_sampleid = row["eid"]
-            print(f"\t{index + 1}\t{row_sampleid}\t{row_sample}")
+            print(f"\t{index + 1}\t{row_sampleid}\t{row_sample}", file=sys.stderr)
+        return None
 
 
 def update_from_db(ods_row, conn):
+    """
+    First try to find a (synsetid, example) match in the database
+    Data base comparison is case-insensitive
+    If this fails, get the examples in the synset fetch the synset's examples and try
+    a looser match
+    """
     ods_oewnsynsetid, ods_sampleid, ods_sample = get_data(ods_row)
     cursor = conn.cursor()
     escaped_sample = ods_sample.replace("'", "''")
@@ -101,7 +128,7 @@ def update_from_db(ods_row, conn):
         print(oe, sql)
     row = cursor.fetchone()
     if row is None:
-        print(f"NOT IN DB {ods_oewnsynsetid}\t{ods_sampleid}\t{ods_sample}\t", file=sys.stderr)
+        # print(f"QUERY BY SYNSETID AND EXAMPLE FAILED {ods_oewnsynsetid} '{ods_sample}'", file=sys.stderr)
         return fetch_synset_samples(ods_row, conn)
     else:
         row_sampleid = row["eid"]
@@ -116,6 +143,9 @@ def update_from_db(ods_row, conn):
 
 
 def default_process(row, conn):
+    """
+    Default processing that does nothing
+    """
     return row
 
 
@@ -155,14 +185,14 @@ def run(filepath, database, processf):
                     # print(f"{new_row[col.synsetid_col].value} {new_row[col.nid_col].value} {new_row[col.text0_col].value}")
                     count += 1
 
-        p = Path(file_abspath)
+        p = Path(str(file_abspath))
         saved = f"{p.parent}/{p.stem}_{processf.__name__}{p.suffix}"
         doc.saveas(saved)
     return count
 
 
 def main():
-    parser = argparse.ArgumentParser(description="scans the ods")
+    parser = argparse.ArgumentParser(description="update ODS rows with SQLITE data")
     parser.add_argument('file', type=str, help='file')
     parser.add_argument('database', type=str, help='database')
     parser.add_argument('--processing', type=str, help='processing function to apply')
