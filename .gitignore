@@ -3,6 +3,7 @@
 /oewn-*.sqbpro
 /fork
 /oewn
+/oewn*
 /yaml
 /output*
 **/*.csv
