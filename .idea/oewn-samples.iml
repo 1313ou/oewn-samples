@@ -14,7 +14,12 @@
       <excludeFolder url="file://$MODULE_DIR$/oewn-2024_format_text.ods" />
       <excludeFolder url="file://$MODULE_DIR$/oewn-2024_format_text_check_text.ods" />
       <excludeFolder url="file://$MODULE_DIR$/oewn-2024_update_from_db.ods" />
+      <excludeFolder url="file://$MODULE_DIR$/oewn-synsetids.sqlite" />
+      <excludeFolder url="file://$MODULE_DIR$/oewn2024" />
+      <excludeFolder url="file://$MODULE_DIR$/oewn2026" />
+      <excludeFolder url="file://$MODULE_DIR$/oewn_format_text.ods" />
       <excludeFolder url="file://$MODULE_DIR$/oewn_format_text_check_text.ods" />
+      <excludeFolder url="file://$MODULE_DIR$/oewn_update_from_db.ods" />
       <excludeFolder url="file://$MODULE_DIR$/output" />
       <excludeFolder url="file://$MODULE_DIR$/yaml" />
     </content>
