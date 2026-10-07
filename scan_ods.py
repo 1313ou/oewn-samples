@@ -1,5 +1,3 @@
-
-
 import argparse
 import sys
 import os
@@ -10,20 +8,20 @@ import ods_columns as col
 import ods_utils
 
 
-def default_process(row):
-    return row
-
-
 def read_row(sheet):
     for row in range(sheet.nrows()):
         yield [sheet[row, c] for c in range(sheet.ncols())]
+
+
+def default_process(row):
+    return row
 
 
 def get_processing(name):
     return globals()[name] if name else default_process
 
 
-def run(filepath, processf):
+def run(filepath, processf, scope=None):
     file_abspath = os.path.abspath(filepath)
     doc = ezodf.opendoc(file_abspath)
     sheet = doc.sheets[0]
@@ -33,8 +31,12 @@ def run(filepath, processf):
     for row in read_row(sheet):
         new_row = processf(row)
         if new_row:
-            # print(f"{'\t'.join([str(c.value) for c in new_row])}")
-            print(f"{new_row[col.text_col].value}")
+            if scope is not None:
+                indexes = [int(f) for f in scope.split(',')]
+                print(f"{'\t'.join([str(new_row[c].value) for c in indexes])}")
+            else:
+                print(f"{'\t'.join([str(c.value) for c in new_row])}")
+
             count += 1
     p = Path(str(file_abspath))
     saved = f"{p.parent}/{p.stem}_{processf.__name__}{p.suffix}"
@@ -46,11 +48,12 @@ def main():
     parser = argparse.ArgumentParser(description="scans the ODS rows")
     parser.add_argument('file', type=str, help='file')
     parser.add_argument('--processing', type=str, help='processing function to apply')
+    parser.add_argument('--scope', type=str, help='limit to only definitions or examples')
     args = parser.parse_args()
     processf = get_processing(args.processing)
     if processf:
         print(processf, file=sys.stderr)
-    run(args.file, processf)
+    run(args.file, processf, scope=args.scope)
 
 
 if __name__ == '__main__':

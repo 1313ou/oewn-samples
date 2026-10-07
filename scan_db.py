@@ -73,7 +73,7 @@ def build_sql(what, scope, resume):
     return sql
 
 
-def read(file, resume, processingf, scope=None):
+def run(file, resume, processingf, scope=None):
     conn = sqlite3.connect(file)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
@@ -115,7 +115,7 @@ def main():
     processingf = get_processing(args.processing)
     if processingf:
         print(processingf, file=sys.stderr)
-    read(args.database, args.resume, processingf, scope=args.scope)
+    run(args.database, args.resume, processingf, scope=args.scope)
     end = time.time()
     print(f"Duration {end - start}", file=sys.stderr)
 
