@@ -2,7 +2,8 @@
 
 import argparse
 import sys
-from utils import read_ods, read_ods_map
+from utils import read_ods_map
+import scan_ods
 
 
 def normalize(k):
@@ -42,7 +43,7 @@ def main():
         nm[nk] = v
         #print(f"{k}\t{m[k]}")
 
-    for row in read_ods.read_row(args.data):
+    for row in scan_ods.read_row(args.data):
         oewnsynsetid = row[0]
         sampleid = int(row[1])
         k = row[5]

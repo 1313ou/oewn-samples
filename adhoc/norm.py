@@ -4,7 +4,7 @@ import argparse
 import sqlite3
 from sqlite3 import OperationalError
 
-from utils import read_ods
+import scan_ods
 
 
 def normalize(k):
@@ -46,7 +46,7 @@ def main():
 
     conn = sqlite3.connect(args.database)
     conn.row_factory = sqlite3.Row
-    for row in read_ods.read_row(args.file):
+    for row in scan_ods.read_row(args.file):
         lookup(conn, row)
     conn.close()
 
