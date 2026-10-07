@@ -6,12 +6,12 @@ import re
 import sys
 from contextlib import contextmanager
 
-import ezodf
-
 import ods_columns as cols
 from oewn_core.wordnet import Example, Synset
 from oewn_core.wordnet_fromyaml import load
 from oewn_core.wordnet_toyaml import save_synsets
+
+import ezodf
 from ezodf.document import MIMETYPES
 
 """
@@ -63,6 +63,7 @@ def example2str(example):
         return example
     elif isinstance(example, Example):
         return f"{example.text} ({example.source})"
+    return None
 
 
 def get_example_text(examples, index):
@@ -71,6 +72,7 @@ def get_example_text(examples, index):
         return examples[index]
     elif isinstance(example, Example):
         return example.text
+    return None
 
 
 def set_example_text(examples, index, new_text):
