@@ -3,10 +3,7 @@
 import argparse
 import sys
 
-import process
-from process import *
-import process2
-from process2 import *
+from spacy_process import case
 
 
 def process_line(line, processf):
@@ -46,7 +43,7 @@ def read_file(file, field, processf):
 
 
 def get_processing(name):
-    return globals()[name] if name else process.default_process
+    return globals()[name] if name else case.default_process
 
 
 def main():

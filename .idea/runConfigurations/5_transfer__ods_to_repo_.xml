@@ -15,7 +15,7 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <option name="DEBUG_JUST_MY_CODE" value="true" />
     <option name="RUN_TOOL" value="" />
-    <option name="SCRIPT_NAME" value="$ProjectFileDir$/load_process_write_yaml_with_odf.py" />
+    <option name="SCRIPT_NAME" value="$ProjectFileDir$/ods_to_yaml.py" />
     <option name="PARAMETERS" value="oewn_format_text_check_text.ods yaml yaml" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />

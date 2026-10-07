@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="1-update_from_db (read_ods_db)" type="PythonConfigurationType" factoryName="Python" folderName="make">
+  <configuration default="false" name="1-update_ods_from_db" type="PythonConfigurationType" factoryName="Python" folderName="make">
     <module name="oewn-samples" />
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
@@ -15,7 +15,7 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <option name="DEBUG_JUST_MY_CODE" value="true" />
     <option name="RUN_TOOL" value="" />
-    <option name="SCRIPT_NAME" value="$ProjectFileDir$/read_ods_db.py" />
+    <option name="SCRIPT_NAME" value="$ProjectFileDir$/db_to_ods.py" />
     <option name="PARAMETERS" value="--processing update_from_db oewn.ods oewn-synsetids.sqlite" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />

@@ -2,10 +2,9 @@
 
 import argparse
 import sqlite3
-import sys
 from sqlite3 import OperationalError
 
-import read_ods
+from utils import read_ods
 
 
 def normalize(k):

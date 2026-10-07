@@ -1,4 +1,4 @@
-from spacy.lang.fr.tokenizer_exceptions import upper_first_letter, lower_first_letter
+from spacy_process.lang.fr.tokenizer_exceptions import upper_first_letter, lower_first_letter
 import sentence
 
 

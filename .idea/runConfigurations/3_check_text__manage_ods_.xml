@@ -15,7 +15,7 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <option name="DEBUG_JUST_MY_CODE" value="true" />
     <option name="RUN_TOOL" value="" />
-    <option name="SCRIPT_NAME" value="$ProjectFileDir$/manage_ods.py" />
+    <option name="SCRIPT_NAME" value="$ProjectFileDir$/process_ods.py" />
     <option name="PARAMETERS" value="--processing check_text oewn_format_text.ods" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />

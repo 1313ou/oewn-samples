@@ -2,8 +2,8 @@
 
 import argparse
 import sys
-import read_ods_map
-import read_ods
+from utils import read_ods, read_ods_map
+
 
 def normalize(k):
     return k.strip(' .?!…;').lower().replace(",","")

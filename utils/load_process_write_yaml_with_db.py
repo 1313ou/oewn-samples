@@ -7,7 +7,6 @@ from contextlib import contextmanager
 from oewn.from_yaml import load
 from oewn.wordnet import Definition, Example
 from oewn_core.wordnet_toyaml import save_synsets
-from process import *
 
 do_process_definitions = False
 do_process_examples = True

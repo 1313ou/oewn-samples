@@ -1,4 +1,4 @@
-from spacy.matcher import Matcher
+from spacy_process.matcher import Matcher
 
 
 def _is_direct_question(doc, nlp):

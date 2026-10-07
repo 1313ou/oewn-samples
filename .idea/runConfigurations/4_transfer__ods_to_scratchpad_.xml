@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="2-format_text (manage_ods)" type="PythonConfigurationType" factoryName="Python" folderName="make">
+  <configuration default="false" name="4-transfer (ods to scratchpad)" type="PythonConfigurationType" factoryName="Python" folderName="make">
     <module name="oewn-samples" />
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
@@ -15,8 +15,8 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <option name="DEBUG_JUST_MY_CODE" value="true" />
     <option name="RUN_TOOL" value="" />
-    <option name="SCRIPT_NAME" value="$ProjectFileDir$/manage_ods.py" />
-    <option name="PARAMETERS" value="--processing format_text oewn.ods" />
+    <option name="SCRIPT_NAME" value="$ProjectFileDir$/ods_to_yaml.py" />
+    <option name="PARAMETERS" value="oewn_format_text_check_text.ods yaml output" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />

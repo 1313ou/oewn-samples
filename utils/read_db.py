@@ -6,8 +6,8 @@ import time
 import sqlite3
 
 from tqdm.auto import tqdm
-import process_quotes
-from process_quotes import *
+import quotes
+from quotes import *
 
 sql_union = """
 SELECT 'sam' AS type, sampleid AS nid, sample AS `text`, oewnsynsetid FROM samples INNER JOIN synsets USING(synsetid)
