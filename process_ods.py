@@ -5,7 +5,7 @@ from pathlib import Path
 import ezodf
 
 import formatter
-import diff
+from utils import diff
 import ods_utils
 import ods_columns as col
 
