@@ -13,8 +13,8 @@ from ezodf.document import MIMETYPES
 
 """
 Process ODS.
--Format text
--Chack text
+- Format text
+- Check text
 """
 
 # Map extensions with leading dots so modern Python extension parsing works
