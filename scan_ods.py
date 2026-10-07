@@ -36,14 +36,14 @@ def run(filepath, processf):
             # print(f"{'\t'.join([str(c.value) for c in new_row])}")
             print(f"{new_row[col.text_col].value}")
             count += 1
-    p = Path(file_abspath)
+    p = Path(str(file_abspath))
     saved = f"{p.parent}/{p.stem}_{processf.__name__}{p.suffix}"
     doc.saveas(saved)
     return count
 
 
 def main():
-    parser = argparse.ArgumentParser(description="scans the ods")
+    parser = argparse.ArgumentParser(description="scans the ODS rows")
     parser.add_argument('file', type=str, help='file')
     parser.add_argument('--processing', type=str, help='processing function to apply')
     args = parser.parse_args()
